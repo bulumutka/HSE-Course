@@ -8,7 +8,7 @@
 #include "biginteger.h"
 #include "gtest/gtest.h"
 
-using namespace bulumutka;
+using bulumutka::BigInteger;
 
 #define SUM_TEST(a, b) { \
     BigInteger first = a; \
