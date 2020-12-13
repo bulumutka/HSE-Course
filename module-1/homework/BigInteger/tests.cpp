@@ -8,6 +8,8 @@
 #include "biginteger.h"
 #include "gtest/gtest.h"
 
+using bulumutka::BigInteger;
+
 TEST(AssignmentFromInt, Test1) {
     int value = 42;
     BigInteger bigint_val;
