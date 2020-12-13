@@ -1,5 +1,6 @@
 #include "circle.h"
 
+#include "geometry_utils.h"
 #include "point.h"
 
 namespace bulumutka {
@@ -7,16 +8,10 @@ namespace bulumutka {
 Circle::Circle(
     const Point& center,
     double radius
-) : Ellipse() {}
+) : Ellipse(center, center, 2 * radius) {}
 
-// Circle
 double Circle::radius() const {
-
-}
-
-// Shape
-bool Circle::operator==(const Shape& other) const {
-
+    return a_;
 }
 
 }

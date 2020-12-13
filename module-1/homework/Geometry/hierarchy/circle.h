@@ -10,13 +10,10 @@ class Point;
 class Circle : public Ellipse {
 public:
     Circle(const Point& center, double radius);
-    virtual ~Circle() override {};
+    virtual ~Circle() override = default;
 
     // Circle
     virtual double radius() const;
-
-    // Shape
-    virtual bool operator==(const Shape& other) const override;
 };
 
 }

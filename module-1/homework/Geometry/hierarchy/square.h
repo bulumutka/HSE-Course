@@ -12,14 +12,11 @@ class Square : public Rectangle {
 public:
     Square(const Point& start, const Point& end);
 
-    virtual ~Square() override {};
+    virtual ~Square() override = default;
 
     // Square
     virtual Circle circumscribedCircle() const;
     virtual Circle inscribedCircle() const;
-
-    // Square
-    virtual bool operator==(const Shape& other) const override;
 };
 
 }

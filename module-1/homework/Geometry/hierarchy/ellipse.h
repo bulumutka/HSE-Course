@@ -1,6 +1,7 @@
 #ifndef ELLIPSE_H_
 #define ELLIPSE_H_
 
+#include "point.h"
 #include "shape.h"
 
 #include <utility>
@@ -8,16 +9,15 @@
 namespace bulumutka {
 
 class Line;
-class Point;
 
 class Ellipse : public Shape {
 public:
     Ellipse(const Point& first, const Point& second, double dist);
 
-    virtual ~Ellipse() override {};
+    virtual ~Ellipse() override = default;
 
     // Ellipse
-    virtual std::pair<Point,Point> focuses() const;
+    virtual std::pair<Point, Point> focuses() const;
     virtual std::pair<Line, Line> directrices() const;
     virtual double eccentricity() const;
     virtual Point center() const;
@@ -35,10 +35,15 @@ public:
     virtual void reflex(const Line& axis) override;
     virtual void scale(const Point& center, double coef) override;
 
+protected:
+    double a_;
+
 private:
+    double linearEccentricity() const;
+    double semiMinorAxis() const;
+
     Point first_;
     Point second_;
-    double dist_;
 };
 
 }

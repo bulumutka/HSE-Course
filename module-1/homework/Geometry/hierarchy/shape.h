@@ -8,7 +8,7 @@ class Point;
 
 class Shape {
 public:
-    virtual ~Shape() = 0;
+    virtual ~Shape() = default;
 
     virtual double perimeter() const = 0;
     virtual double area() const = 0;

@@ -14,14 +14,11 @@ class Rectangle : public Polygon {
 public:
     Rectangle(const Point& start, const Point& end, double coef);
 
-    virtual ~Rectangle() override {};
+    virtual ~Rectangle() override = default;
 
     // Rectangle
     virtual Point center() const;
     virtual std::pair<Line, Line> diagonals() const;
-
-    // Polygon
-    virtual bool operator==(const Shape& other) const override;
 };
 
 }

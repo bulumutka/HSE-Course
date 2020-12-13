@@ -1,7 +1,5 @@
 #include "line.h"
 
-#include "point.h"
-
 namespace bulumutka {
 
 Line::Line(const Point& start, const Point& end)

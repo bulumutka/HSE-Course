@@ -12,14 +12,10 @@ class Triangle : public Polygon{
 public:
     Triangle(const Point& first, const Point& second, const Point& third);
 
-    virtual ~Triangle() override {};
+    virtual ~Triangle() override = default;
 
-    // Square
     virtual Circle circumscribedCircle() const;
     virtual Circle inscribedCircle() const;
-
-    // Square
-    virtual bool operator==(const Shape& other) const override;
 };
 
 }

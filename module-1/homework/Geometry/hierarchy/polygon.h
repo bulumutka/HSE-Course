@@ -14,12 +14,12 @@ class Polygon : public Shape {
 public:
     Polygon(const std::vector<Point>& vertices);
 
-    virtual ~Polygon() override {};
+    virtual ~Polygon() override = default;
 
     // Polygon
     virtual int verticesCount() const;
     virtual std::vector<Point> getVertices() const;
-    virtual bool isCovex() const;
+    virtual bool isConvex() const;
 
     // Shape
     virtual double perimeter() const override;
