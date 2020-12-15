@@ -16,13 +16,11 @@ public:
 
     virtual ~Ellipse() override = default;
 
-    // Ellipse
     virtual std::pair<Point, Point> focuses() const;
     virtual std::pair<Line, Line> directrices() const;
     virtual double eccentricity() const;
     virtual Point center() const;
 
-    // Shape
     virtual double perimeter() const override;
     virtual double area() const override;
     virtual bool operator==(const Shape& other) const override;

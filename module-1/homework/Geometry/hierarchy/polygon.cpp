@@ -15,18 +15,17 @@ namespace {
 std::optional<double> findSimilarCoef(
     const std::vector<Point>& lhs, const std::vector<Point>& rhs
 ) {
-    int size = lhs.size();
     if (lhs.size() != rhs.size()) {
         return std::nullopt;
     }
 
-    for (int i = 0; i != size; ++i) {
+    for (size_t i = 0; i != lhs.size(); ++i) {
         std::optional<double> similar_coef;
-        for (int j = 0; j != size; ++j) {
+        for (size_t j = 0; j != lhs.size(); ++j) {
             const auto& first_current = lhs[i];
-            const auto& first_next = lhs[(i + 1) % size];
+            const auto& first_next = lhs[(i + 1) % lhs.size()];
             const auto& second_current = rhs[j];
-            const auto& second_next = rhs[(j + 1) % size];
+            const auto& second_next = rhs[(j + 1) % lhs.size()];
             double coef = geometry_utils::dist(first_current, first_next) 
                 / geometry_utils::dist(second_current, second_next);
             
@@ -36,7 +35,7 @@ std::optional<double> findSimilarCoef(
                 break;
             }
 
-            if (j + 1 == size) {
+            if (j + 1 == lhs.size()) {
                 return similar_coef;
             }
         }
@@ -53,8 +52,7 @@ Polygon::Polygon(const std::vector<Point>& vertices)
     assert(vertices_.size() > 2);    
 }
 
-// Polygon
-int Polygon::verticesCount() const {
+size_t Polygon::verticesCount() const {
     return vertices_.size();
 }
 
@@ -89,7 +87,6 @@ bool Polygon::isConvex() const {
     return true;
 }
 
-// Shape
 double Polygon::perimeter() const {
     double perimeter = 0.0;
     for (size_t i = 0; i != verticesCount(); ++i) {
@@ -103,10 +100,9 @@ double Polygon::area() const {
     const auto inside = (vertices_[0] + vertices_[1]) / 2;
     double area_sum = 0;
 
-    int size = vertices_.size();
-    for (int i = 0; i < size; ++i) {
+    for (size_t i = 0; i < verticesCount(); ++i) {
         const auto& current = vertices_[i];
-        const auto& next = vertices_[(i + 1) % size];
+        const auto& next = vertices_[(i + 1) % verticesCount()];
         area_sum += std::abs(geometry_utils::crossProduct(current - inside, next - inside));
     }
 
@@ -156,10 +152,9 @@ bool Polygon::isSimilarTo(const Shape& other) const {
 
 bool Polygon::containsPoint(const Point& point) const {
     double angle_sum = 0;
-    const int size = verticesCount();
-    for (int i = 0; i != size; ++i) {
+    for (size_t i = 0; i != verticesCount(); ++i) {
         const auto curr = vertices_[i] - point;
-        const auto next = vertices_[(i + 1) % size] - point;
+        const auto next = vertices_[(i + 1) % verticesCount()] - point;
         const double scalar_product = geometry_utils::scalarProduct(curr, next);
         const double cross_product = geometry_utils::crossProduct(curr, next);
         if (geometry_utils::closeEquals(cross_product, 0.0) 

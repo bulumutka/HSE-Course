@@ -14,7 +14,6 @@ public:
 
     virtual ~Square() override = default;
 
-    // Square
     virtual Circle circumscribedCircle() const;
     virtual Circle inscribedCircle() const;
 };

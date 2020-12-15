@@ -40,7 +40,6 @@ Rectangle::Rectangle(
     double coef
 ) : Polygon(createVertices(start, end, coef)) {}
 
-// Rectangle
 Point Rectangle::center() const {
     const auto& vertices = getVertices();
     return (vertices[0] + vertices[2]) / 2;

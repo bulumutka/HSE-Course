@@ -16,7 +16,6 @@ public:
 
     virtual ~Rectangle() override = default;
 
-    // Rectangle
     virtual Point center() const;
     virtual std::pair<Line, Line> diagonals() const;
 };

@@ -17,7 +17,6 @@ Ellipse::Ellipse(
     a_(dist / 2)
 {}
 
-// Ellipse
 std::pair<Point, Point> Ellipse::focuses() const {
     return { first_, second_ };
 }
@@ -47,8 +46,6 @@ double Ellipse::eccentricity() const {
 Point Ellipse::center() const {
     return (first_ + second_) / 2;
 }
-
-// Shape
 
 double Ellipse::perimeter() const {
     const double b = semiMinorAxis();

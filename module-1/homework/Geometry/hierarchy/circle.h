@@ -12,7 +12,6 @@ public:
     Circle(const Point& center, double radius);
     virtual ~Circle() override = default;
 
-    // Circle
     virtual double radius() const;
 };
 

@@ -16,12 +16,10 @@ public:
 
     virtual ~Polygon() override = default;
 
-    // Polygon
-    virtual int verticesCount() const;
+    virtual size_t verticesCount() const;
     virtual std::vector<Point> getVertices() const;
     virtual bool isConvex() const;
 
-    // Shape
     virtual double perimeter() const override;
     virtual double area() const override;
     virtual bool operator==(const Shape& other) const override;
