@@ -3,9 +3,6 @@
 
 template <typename T>
 class CustomAllocator {
-private:
-    struct SharedState;
-
 public:
     template <typename U>
     struct rebind {  // NOLINT
@@ -26,17 +23,17 @@ public:
 
     CustomAllocator();
     CustomAllocator(const CustomAllocator& other) noexcept;
-    ~CustomAllocator() = default;
+    ~CustomAllocator();
 
     template <typename U>
     explicit CustomAllocator(const CustomAllocator<U>& other) noexcept;
 
     T* allocate(size_t n) {  // NOLINT
-        if (state_->size + n > kMaxSize) {
+        if (*size_ + n > kMaxSize) {
             throw std::runtime_error("Not enough memory");
         }
-        auto result = static_cast<pointer>(state_->data) + state_->size;
-        state_->size += n;
+        auto result = static_cast<pointer>(data_) + *size_;
+        *size_ += n;
         return result;
     }
 
@@ -53,8 +50,16 @@ public:
         p->~value_type();
     }
 
-    std::shared_ptr<SharedState> State() const {
-        return state_;
+    void* Data() const {
+        return data_;
+    }
+
+    size_type* Counter() const {
+        return counter_;
+    }
+
+    size_type* Size() const {
+        return size_;
     }
 
     template <typename K, typename U>
@@ -65,49 +70,44 @@ public:
 private:
     static const size_type kMaxSize{100000};
 
-    std::shared_ptr<SharedState> state_;
-
-    struct SharedState {
-        void* data;
-        size_type size;
-
-        SharedState() : data(operator new(kMaxSize * sizeof(value_type))), size(0) {
-        }
-
-        SharedState(const SharedState& other) = delete;
-        SharedState& operator=(const SharedState& other) = delete;
-
-        ~SharedState() {
-            operator delete(data);
-        }
-
-        bool operator==(const SharedState& other) const {
-            return data == other.data;
-        }
-
-        bool operator!=(const SharedState& other) const {
-            return !(*this == other);
-        }
-    };
+    void* data_ = nullptr;
+    size_type* size_ = nullptr;
+    size_type* counter_ = nullptr;
 };
 
 template <typename T>
-CustomAllocator<T>::CustomAllocator() : state_(std::make_shared<SharedState>()) {
+CustomAllocator<T>::~CustomAllocator() {
+    --(*counter_);
+    if (*counter_ == 0) {
+        operator delete(data_);
+        delete size_;
+        delete counter_;
+    }
 }
 
 template <typename T>
-CustomAllocator<T>::CustomAllocator(const CustomAllocator& other) noexcept : state_(other.State()) {
+CustomAllocator<T>::CustomAllocator()
+    : data_(operator new(kMaxSize * sizeof(value_type))),
+      size_(new size_t(0)),
+      counter_(new size_t(1)) {
+}
+
+template <typename T>
+CustomAllocator<T>::CustomAllocator(const CustomAllocator& other) noexcept
+    : data_(other.data_), size_(other.size_), counter_(other.counter_) {
+    ++(*counter_);
 }
 
 template <typename T>
 template <typename U>
 CustomAllocator<T>::CustomAllocator(const CustomAllocator<U>& other) noexcept
-    : state_(other.State()) {
+    : data_(other.Data()), size_(other.Size()), counter_(other.Counter()) {
+    ++(*counter_);
 }
 
 template <typename T, typename U>
 bool operator==(const CustomAllocator<T>& lhs, const CustomAllocator<U>& rhs) noexcept {
-    return lhs.State() == rhs.State();
+    return lhs.data_ == rhs.data_;
 }
 
 template <typename T, typename U>
