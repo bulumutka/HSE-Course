@@ -12,11 +12,61 @@
 #include "hierarchy/circle.h"
 #include "hierarchy/ellipse.h"
 #include "hierarchy/square.h"
+#include "hierarchy/geometry_utils.h"
 
 #include "gtest/gtest.h"
 
+using namespace bulumutka;
+
 double dist(const Point& a, const Point& b) {
     return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y-b.y));
+}
+
+TEST(FindNormal, Test1) {
+    {
+        Point a { 2, 6 };
+        Line axis(
+            { 0, 3 },
+            { 4, 3 }
+        );
+        const auto actual = geometry_utils::findNormal(a, axis);
+        const Point expected(2, 3);
+        ASSERT_EQ(expected, actual);
+    }
+}
+
+TEST(PolygonReflex, Test2) {
+    {
+        std::vector<Point> vec1 {
+            { -3, 4 },
+            { 1, 4 },
+            { 1, 1 },
+            { -3, 1 }
+        };
+        Line axis(
+            { 0, -10},
+            { 0, 3 }
+        );
+        Polygon pol1(vec1);
+        pol1.reflex(axis);
+        std::vector<Point> vec2 {
+            { -1, 4 },
+            { -1, 1 },
+            { 3, 1 },
+            { 3, 4 }
+        };
+
+        Polygon expected(vec2);
+
+        ASSERT_EQ(expected, pol1);
+    }
+}
+
+TEST(PointRotate, Test1) {
+    Point a(1, 1);
+    a = geometry_utils::rotatePoint(a, geometry_utils::toRadians(45));
+    ASSERT_NEAR(a.x, 0, 1e-6);
+    ASSERT_NEAR(a.y, std::sqrt(2), 1e-6);
 }
 
 TEST(PointsDistance, TestOne) {
