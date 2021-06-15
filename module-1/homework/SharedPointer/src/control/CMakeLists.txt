@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(runner)
 
-add_library(control control.h)
+add_library(control OBJECT control.h)
 set_target_properties(control PROPERTIES LINKER_LANGUAGE CXX)
 
 ################ clang-format ################
