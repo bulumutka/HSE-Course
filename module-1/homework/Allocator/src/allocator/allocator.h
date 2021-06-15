@@ -14,11 +14,11 @@ public:
 
     using value_type = T;
     using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
     using pointer = T*;
     using const_pointer = const T*;
     using reference = T&;
     using const_reference = const T&;
+    using pointer_difference = std::ptrdiff_t;
     using propagate_on_container_move_assignment = std::false_type;
     using propagate_on_container_copy_assignment = std::false_type;
     using propagate_on_container_swap = std::true_type;
@@ -53,6 +53,10 @@ public:
         p->~value_type();
     }
 
+    std::shared_ptr<SharedState> State() const {
+        return state_;
+    }
+
     template <typename K, typename U>
     friend bool operator==(const CustomAllocator<K>& lhs, const CustomAllocator<U>& rhs) noexcept;
     template <typename K, typename U>
@@ -69,6 +73,9 @@ private:
 
         SharedState() : data(operator new(kMaxSize * sizeof(value_type))), size(0) {
         }
+
+        SharedState(const SharedState& other) = delete;
+        SharedState& operator=(const SharedState& other) = delete;
 
         ~SharedState() {
             operator delete(data);
@@ -89,18 +96,18 @@ CustomAllocator<T>::CustomAllocator() : state_(std::make_shared<SharedState>()) 
 }
 
 template <typename T>
-CustomAllocator<T>::CustomAllocator(const CustomAllocator& other) noexcept : state_(other.state_) {
+CustomAllocator<T>::CustomAllocator(const CustomAllocator& other) noexcept : state_(other.State()) {
 }
 
 template <typename T>
 template <typename U>
 CustomAllocator<T>::CustomAllocator(const CustomAllocator<U>& other) noexcept
-    : state_(other.state_) {
+    : state_(other.State()) {
 }
 
 template <typename T, typename U>
 bool operator==(const CustomAllocator<T>& lhs, const CustomAllocator<U>& rhs) noexcept {
-    return lhs.state_ == rhs.state_;
+    return lhs.State() == rhs.State();
 }
 
 template <typename T, typename U>
