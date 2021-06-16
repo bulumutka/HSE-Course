@@ -29,7 +29,7 @@ public:
     }
 
     template <typename U = T>
-    constexpr explicit BaseOptional(U&& value) : value_(std::forward<U>(value)), hasValue_(true) {
+    constexpr explicit BaseOptional(U&& value) : value_{std::forward<U>(value)}, hasValue_{true} {
     }
 
     constexpr explicit BaseOptional(NullOpt) noexcept {
@@ -37,7 +37,7 @@ public:
 
     template <typename... Args>
     constexpr explicit BaseOptional(InPlace, Args&&... args)
-        : value_(std::forward<Args>(args)...), hasValue_(true) {
+        : value_{std::forward<Args>(args)...}, hasValue_{true} {
     }
 
     virtual ~BaseOptional() {
@@ -55,7 +55,7 @@ protected:
     }
 
     T value_;
-    bool hasValue_ = false;
+    bool hasValue_{false};
 };
 
 template <typename T>
@@ -65,7 +65,7 @@ public:
     }
 
     template <typename U = T>
-    constexpr explicit BaseOptional(U&& value) : value_(std::forward<U>(value)), hasValue_(true) {
+    constexpr explicit BaseOptional(U&& value) : value_{std::forward<U>(value)}, hasValue_{true} {
     }
 
     constexpr explicit BaseOptional(NullOpt) noexcept {
@@ -73,7 +73,7 @@ public:
 
     template <typename... Args>
     constexpr explicit BaseOptional(InPlace, Args&&... args)
-        : value_(std::forward<Args>(args)...), hasValue_(true) {
+        : value_{std::forward<Args>(args)...}, hasValue_{true} {
     }
 
     virtual ~BaseOptional() {
@@ -100,7 +100,7 @@ protected:
     }
 
     T value_;
-    bool hasValue_ = false;
+    bool hasValue_{false};
 };
 
 template <typename T>
