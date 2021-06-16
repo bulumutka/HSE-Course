@@ -50,7 +50,7 @@ protected:
 template <typename T, typename Deleter>
 class ControlBlock : public SharedWeakCount {
 public:
-    explicit ControlBlock(T* value) : value_(value) {
+    explicit ControlBlock(T* value) : value_{value} {
         Add();
     }
 
@@ -64,5 +64,5 @@ public:
     }
 
 private:
-    T* value_ = nullptr;
+    T* value_{nullptr};
 };

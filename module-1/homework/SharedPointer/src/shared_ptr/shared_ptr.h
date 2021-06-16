@@ -43,19 +43,19 @@ public:
     }
 
     template <typename Y>
-    explicit SharedPtr(Y* p) : value_(p), control_(new ControlBlock<Y, deleter_type>(p)) {
+    explicit SharedPtr(Y* p) : value_{p}, control_{new ControlBlock<Y, deleter_type>(p)} {
     }
 
     template <typename Y, typename Deleter>
     SharedPtr(Y* p, Deleter /*deleter*/) noexcept
-        : value_(p), control_(new ControlBlock<Y, Deleter>(p)) {
+        : value_{p}, control_{new ControlBlock<Y, Deleter>(p)} {
     }
 
-    SharedPtr(const SharedPtr& other) noexcept : value_(other.value_), control_(other.control_) {
+    SharedPtr(const SharedPtr& other) noexcept : value_{other.value_}, control_{other.control_} {
         control_->Add();
     }
 
-    SharedPtr(SharedPtr&& other) noexcept : value_(other.value_), control_(other.control_) {
+    SharedPtr(SharedPtr&& other) noexcept : value_{other.value_}, control_{other.control_} {
         other.value_ = nullptr;
         other.control_ = nullptr;
     }
@@ -162,8 +162,8 @@ public:
     friend class WeakPtr;
 
 private:
-    T* value_ = nullptr;
-    SharedWeakCount* control_ = nullptr;
+    T* value_{nullptr};
+    SharedWeakCount* control_{nullptr};
 };
 
 template <typename T, typename... Args>
@@ -183,15 +183,15 @@ public:
     constexpr WeakPtr() noexcept = default;
 
     template <typename Y>
-    explicit WeakPtr(const SharedPtr<Y>& other) : value_(other.value_), control_(other.control_) {
+    explicit WeakPtr(const SharedPtr<Y>& other) : value_{other.value_}, control_{other.control_} {
         control_->AddWeak();
     }
 
-    WeakPtr(const WeakPtr& other) noexcept : value_(other.value_), control_(other.conrol_) {
+    WeakPtr(const WeakPtr& other) noexcept : value_{other.value_}, control_{other.conrol_} {
         control_->AddWeak();
     }
 
-    WeakPtr(WeakPtr&& other) noexcept : value_(other.value_), control_(other.control_) {
+    WeakPtr(WeakPtr&& other) noexcept : value_{other.value_}, control_{other.control_} {
         other.value_ = nullptr;
         other.control_ = nullptr;
     }
@@ -266,6 +266,6 @@ public:
     friend class SharedPtr;
 
 public:
-    T* value_ = nullptr;
-    SharedWeakCount* control_ = nullptr;
+    T* value_{nullptr};
+    SharedWeakCount* control_{nullptr};
 };
