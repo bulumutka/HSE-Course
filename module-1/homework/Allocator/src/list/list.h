@@ -17,7 +17,7 @@ private:
 public:
     using value_type = T;
     using allocator_type = Allocator;
-    using size_type = std::size_t;
+    using size_type = size_t;
     using reference = T&;
     using const_reference = const T&;
     using pointer = typename std::allocator_traits<Allocator>::pointer;
@@ -30,7 +30,7 @@ public:
     // Special member functions
     List() = default;
 
-    List(const List& other) : allocator_(other.allocator_) {
+    List(const List& other) : allocator_{other.allocator_} {
         for (auto it = other.Begin(); it != other.End(); ++it) {
             PushBack(*it);
         }
@@ -92,18 +92,18 @@ public:
     allocator_type GetAllocator() const noexcept;
 
 private:
-    typedef typename std::allocator_traits<Allocator>::template rebind_alloc<Node> node_alocator;
+    using node_alocator = typename std::allocator_traits<Allocator>::template rebind_alloc<Node>;
 
     node_alocator allocator_;
-    Node* head_ = nullptr;
-    Node* tail_ = nullptr;
+    Node* head_{nullptr};
+    Node* tail_{nullptr};
 
     struct Node {
         Node* prev;
         Node* next;
         value_type value;
 
-        Node(Node* prev, Node* next, const_reference value) : prev(prev), next(next), value(value) {
+        Node(Node* prev, Node* next, const_reference value) : prev{prev}, next{next}, value{value} {
         }
     };
 
@@ -116,7 +116,7 @@ private:
         using iterator_category = std::bidirectional_iterator_tag;
 
         Iterator() = delete;
-        explicit Iterator(Node* node, bool end = false) : node_(node), end_(end) {
+        explicit Iterator(Node* node, bool end = false) : node_{node}, end_{end} {
         }
 
         Iterator& operator++() {

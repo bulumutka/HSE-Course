@@ -10,12 +10,12 @@ public:
     };
 
     using value_type = T;
-    using size_type = std::size_t;
+    using size_type = size_t;
     using pointer = T*;
     using const_pointer = const T*;
     using reference = T&;
     using const_reference = const T&;
-    using pointer_difference = std::ptrdiff_t;
+    using pointer_difference = ptrdiff_t;
     using propagate_on_container_move_assignment = std::false_type;
     using propagate_on_container_copy_assignment = std::false_type;
     using propagate_on_container_swap = std::true_type;
@@ -70,9 +70,9 @@ public:
 private:
     static const size_type kMaxSize{100000};
 
-    void* data_ = nullptr;
-    size_type* size_ = nullptr;
-    size_type* counter_ = nullptr;
+    void* data_{nullptr};
+    size_type* size_{nullptr};
+    size_type* counter_{nullptr};
 };
 
 template <typename T>
@@ -87,21 +87,21 @@ CustomAllocator<T>::~CustomAllocator() {
 
 template <typename T>
 CustomAllocator<T>::CustomAllocator()
-    : data_(operator new(kMaxSize * sizeof(value_type))),
-      size_(new size_t(0)),
-      counter_(new size_t(1)) {
+    : data_{operator new(kMaxSize * sizeof(value_type))},
+      size_{new size_t(0)},
+      counter_{new size_t(1)} {
 }
 
 template <typename T>
 CustomAllocator<T>::CustomAllocator(const CustomAllocator& other) noexcept
-    : data_(other.data_), size_(other.size_), counter_(other.counter_) {
+    : data_{other.data_}, size_{other.size_}, counter_{other.counter_} {
     ++(*counter_);
 }
 
 template <typename T>
 template <typename U>
 CustomAllocator<T>::CustomAllocator(const CustomAllocator<U>& other) noexcept
-    : data_(other.Data()), size_(other.Size()), counter_(other.Counter()) {
+    : data_{other.Data()}, size_{other.Size()}, counter_{other.Counter()} {
     ++(*counter_);
 }
 
