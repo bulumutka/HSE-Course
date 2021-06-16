@@ -1,0 +1,3 @@
+build/
+.vscode/
+clangformat-cmake/
