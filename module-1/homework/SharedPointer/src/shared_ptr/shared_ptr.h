@@ -79,20 +79,14 @@ public:
 
     SharedPtr& operator=(SharedPtr&& r) noexcept {
         Reset();
-        value_ = r.value_;
-        control_ = r.control_;
-        r.value_ = nullptr;
-        r.control_ = nullptr;
+        Swap(r);
         return *this;
     }
 
     template <typename Y>
     SharedPtr& operator=(SharedPtr<Y>&& r) noexcept {
         Reset();
-        value_ = r.value_;
-        control_ = r.control_;
-        r.value_ = nullptr;
-        r.control_ = nullptr;
+        Swap(r);
         return *this;
     }
 
@@ -215,10 +209,7 @@ public:
 
     WeakPtr& operator=(WeakPtr&& other) noexcept {
         Reset();
-        value_ = other.value_;
-        control_ = other.control_;
-        other.value_ = nullptr;
-        other.control_ = nullptr;
+        Swap(other);
         return *this;
     }
 
