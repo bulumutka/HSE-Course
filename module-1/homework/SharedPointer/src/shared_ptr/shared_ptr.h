@@ -61,19 +61,13 @@ public:
     }
 
     SharedPtr& operator=(const SharedPtr& r) noexcept {
-        Reset();
-        value_ = r.value_;
-        control_ = r.control_;
-        control_->Add();
+        SharedPtr(r).Swap(*this);
         return *this;
     }
 
     template <typename Y>
     SharedPtr& operator=(const SharedPtr<Y>& r) noexcept {
-        Reset();
-        value_ = r.value_;
-        control_ = r.control_;
-        control_->Add();
+        SharedPtr(r).Swap(*this);
         return *this;
     }
 
@@ -192,18 +186,12 @@ public:
 
     template <typename Y>
     WeakPtr& operator=(const SharedPtr<Y>& other) {
-        Reset();
-        value_ = other.value_;
-        control_ = other.control_;
-        control_->AddWeak();
+        WeakPtr(other).Swap(*this);
         return *this;
     }
 
     WeakPtr& operator=(const WeakPtr& other) noexcept {
-        Reset();
-        value_ = other.value_;
-        control_ = other.control_;
-        control_->AddWeak();
+        WeakPtr(other).Swap(*this);
         return *this;
     }
 
